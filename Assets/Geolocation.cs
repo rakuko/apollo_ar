@@ -32,6 +32,8 @@ public class Geolocation : MonoBehaviour
 	public float gpsUpdate = 0.1f;
 	public float gpsOther = 1.0f;
 
+	public GUISkin menuSkin;
+
 	public double distance = 1000; //distance to the nearest poi in meters
 
 	public float earth_radius = 6371000; //radius in meters
@@ -60,6 +62,7 @@ public class Geolocation : MonoBehaviour
 	string going_to; //string value to help display which direction we're going
 
 	bool stop_before = false; //have you passed the stop before YOUR stop?
+	bool arrived = false; //have you arrived at your stop?
 
 	//OmniController omni = GetComponent<OmniController>();
 
@@ -295,15 +298,20 @@ public class Geolocation : MonoBehaviour
 		GUI.Label (new Rect (5, 470, 100, 50), "old lat: " + old_lat, myGuiStyle_CORDS);
 		GUI.Label (new Rect (5, 530, 100, 50), "old lon: " + old_lon, myGuiStyle_CORDS);
 
-		//GUI.Label (new Rect (5, 590, 100, 50), "poi lat: " + lat_1, myGuiStyle_CORDS);
-		//GUI.Label (new Rect (5, 650, 100, 50), "poi lon: " + long_1, myGuiStyle_CORDS);
-		GUI.Label (new Rect (5, 590, 100, 50), "closest to: " + bus_stops[current_index], myGuiStyle_CORDS);
+		GUI.Label (new Rect (5, 590, 100, 50), "dest lat: " + dest_lat, myGuiStyle_CORDS);
+		GUI.Label (new Rect (5, 650, 100, 50), "dest lon: " + dest_lon, myGuiStyle_CORDS);
+		//GUI.Label (new Rect (5, 590, 100, 50), "closest to: " + bus_stops[current_index], myGuiStyle_CORDS);
 
-		GUI.Label (new Rect (5, 650, 100, 50), "Distance2: " + distance, myGuiStyle_CORDS);
-		GUI.Label (new Rect (5, 710, 100, 50), "Going towards: " + going_to, myGuiStyle_CORDS);
+		GUI.Label (new Rect (5, 710, 100, 50), "Distance: " + distance, myGuiStyle_CORDS);
+		GUI.Label (new Rect (5, 770, 100, 50), "Going towards: " + going_to, myGuiStyle_CORDS);
 		//GUI.Label (new Rect (5, 770, 100, 50), "Distance3: " + dis3, myGuiStyle_CORDS);
 
-		if(GUI.Button(new Rect(Screen.width - 100,Screen.height /4+50,100,50), "Back")){
+		if (arrived) {
+			GUI.Label (new Rect (5, 900, 100, 50), "You've arrived!", myGuiStyle_CORDS);
+		}
+
+		GUI.skin = menuSkin;
+		if(GUI.Button(new Rect(Screen.width - 400,Screen.height - 200,300,100), "Back")){
 			Application.LoadLevel("menu");
 		}
 	}
@@ -377,16 +385,28 @@ public class Geolocation : MonoBehaviour
 						courtyard.Play();
 					}
 				}*/
-				bing.Play ();
+
+
 
 				//current_index = 0;
-				if (!stop_before) {
+				if (stop_before) {
+					arrived = true;
+					bing.Play ();
+					stop_before = false;
+				}
+				else if (!stop_before && !arrived) {
 					dest_lat = bus_stops_lat [stop_index];
 					dest_lon = bus_stops_long [stop_index];
 					dest_name = bus_stops [stop_index];
+					if ((latitude != null) && (longitude != null)) {
+						distance = DistanceCalculation (latitude, longitude, dest_lat, dest_lon);
+					}
 					stop_before = true;
+
 					print ("updated destination to: " + dest_name);
+					bing.Play ();
 				}
+
 			}
 			/*
 			if (dis2 < 11) {

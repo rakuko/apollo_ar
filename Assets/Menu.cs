@@ -30,6 +30,8 @@ public class Menu : MonoBehaviour {
 	public GameObject stopGrey;
 	public GameObject stopBanner;
 
+	public int streetMenu_index = 0;
+
 	/*
 	private bool showList = false;
 	private int listEntry = 0;
@@ -92,7 +94,7 @@ public class Menu : MonoBehaviour {
 
 		if (mainMenu) {
 			GUI.skin = MenuSkin;
-			if (GUI.Button (new Rect (50, 200, Screen.width - 100, 100), "Destination")) {
+			if (GUI.Button (new Rect (50, 350, Screen.width - 100, 100), "Destination")) {
 
 				mainMenu = false;
 				mainGrey.SetActive(false);
@@ -106,7 +108,7 @@ public class Menu : MonoBehaviour {
 				GUI.skin = DestinationOn;
 			}
 
-			if (GUI.Button (new Rect (50, Screen.height - 300, 300, 100), "To NYU")) {
+			if (GUI.Button (new Rect (50, Screen.height/2, 300, 100), "To NYU")) {
 				to_pratt = false;
 			}
 			GUI.skin = MenuSkin;
@@ -114,7 +116,7 @@ public class Menu : MonoBehaviour {
 				GUI.skin = DestinationOn;
 			}
 
-			if (GUI.Button (new Rect (Screen.width - 300, Screen.height - 300, 300, 100), "To Pratt")) {
+			if (GUI.Button (new Rect (Screen.width - 350, Screen.height/2, 300, 100), "To Pratt")) {
 				to_pratt = true;
 			}
 
@@ -130,9 +132,9 @@ public class Menu : MonoBehaviour {
 		//the user clicks on the "Change Graphics Quality" Button, and then dissapear when they click
 		//on it again....
 
-		GUI.skin = stopSkin;
+
 		if (streetMenu) {
-			scrollPosition = GUI.BeginScrollView(new Rect(0,Screen.height/2,Screen.width,Screen.height - 400), scrollPosition, new Rect(0,0,800,1200));
+			//scrollPosition = GUI.BeginScrollView(new Rect(0,Screen.height/2,Screen.width,Screen.height - 400), scrollPosition, new Rect(0,0,800,1200));
 			/*
 			if(GUI.Button(new Rect(350,50 ,800, 100), bus_stops [0])){
 				stop_index = 0;
@@ -144,27 +146,46 @@ public class Menu : MonoBehaviour {
 				stop_index = 2;
 			}
 			*/
-			if(GUI.Button(new Rect(0, 0 , Screen.width, 100), bus_stops [0])){
-				stop_index = 0;
+			GUI.skin = stopSkin;
+			if(GUI.Button(new Rect(50, Screen.height/2, 100, 100), "^")){
+				if (streetMenu_index > 0) {
+					streetMenu_index--;
+				}
 			}
-			if(GUI.Button(new Rect(0, 100, Screen.width, 100), bus_stops [1])){
-				stop_index = 1;
+			if(GUI.Button(new Rect(50, Screen.height - 146, 100, 100), "v")){
+				if (streetMenu_index+6 < 11) {
+					streetMenu_index++;
+				}
 			}
-			if(GUI.Button(new Rect(0, 200, Screen.width, 100), bus_stops [2])){
-				stop_index = 2;
+
+			if(GUI.Button(new Rect(100, Screen.height/2, Screen.width - 100, 100), bus_stops [streetMenu_index])){
+				stop_index = streetMenu_index;
 			}
-			if(GUI.Button(new Rect(0, 300, Screen.width, 100), bus_stops [0])){
-				stop_index = 3;
+			if(GUI.Button(new Rect(100, Screen.height/2 + 100, Screen.width - 100, 100), bus_stops [streetMenu_index + 1])){
+				stop_index = streetMenu_index + 1;
 			}
-			if(GUI.Button(new Rect(0, 400, Screen.width, 100), bus_stops [1])){
-				stop_index = 4;
+			if(GUI.Button(new Rect(100, Screen.height/2 + 200, Screen.width - 100, 100), bus_stops [streetMenu_index + 2])){
+				stop_index = streetMenu_index + 2;
 			}
-			if(GUI.Button(new Rect(0, 500, Screen.width, 100), bus_stops [2])){
-				stop_index = 5;
+			if(GUI.Button(new Rect(100, Screen.height/2 + 300, Screen.width - 100, 100), bus_stops [streetMenu_index + 3])){
+				stop_index = streetMenu_index + 3;
 			}
-			if(GUI.Button(new Rect(0, 600, Screen.width, 100), bus_stops [0])){
-				stop_index = 6;
+			if(GUI.Button(new Rect(100, Screen.height/2 + 400, Screen.width - 100, 100), bus_stops [streetMenu_index + 4])){
+				stop_index = streetMenu_index + 4;
 			}
+			if(GUI.Button(new Rect(100, Screen.height/2 + 500, Screen.width - 100, 100), bus_stops [streetMenu_index + 5])){
+				stop_index = streetMenu_index + 5;
+			}
+			if(GUI.Button(new Rect(100, Screen.height/2 + 600, Screen.width - 100, 100), bus_stops [streetMenu_index + 6])){
+				stop_index = streetMenu_index + 6;
+			}
+
+			//to avoid coding touch scrolling which would take longer to work with scrollView
+			//i'm simply going to update the buttons everytime you press up arrow or down arrow
+			//buttons on the screen.
+
+
+			/*
 			if(GUI.Button(new Rect(0, 700, Screen.width, 100), bus_stops [1])){
 				stop_index = 7;
 			}
@@ -180,7 +201,8 @@ public class Menu : MonoBehaviour {
 			if(GUI.Button(new Rect(0, 1100, Screen.width, 100), bus_stops [2])){
 				stop_index = 11;
 			}
-			GUI.EndScrollView();
+			*/
+			//GUI.EndScrollView();
 
 			GUI.skin = submitSkin;
 			
