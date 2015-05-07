@@ -32,6 +32,8 @@ public class Menu : MonoBehaviour {
 
 	public int streetMenu_index = 0;
 
+	public float scale = 1.0f;
+
 	/*
 	private bool showList = false;
 	private int listEntry = 0;
@@ -59,33 +61,80 @@ public class Menu : MonoBehaviour {
 
 	void Start(){
 
-		bus_stops = new string[12]; //<---- change this number if you want to add more than 10 bus stops
-		bus_stops [0] = "Jay St/Myrtle Plz";
-		bus_stops [1] = "Tillary St/Jay St";
-		bus_stops [2] = "Myrtle Av/Fleet Pl";
-		bus_stops [3] = "Myrtle Av/Ashland";
-		bus_stops [4] = "Myrtle Av/St Edwards";
-		bus_stops [5] = "Myrtle Av/N Portland";
-		bus_stops [6] = "Myrtle Av/Carlton";
-		bus_stops [7] = "Myrtle Av/Vanderbilt";
-		bus_stops [8] = "Myrtle Av/Clinton";
-		bus_stops [9] = "Myrtle Av/Washington";
-		bus_stops [10] = "Myrtle Av/Ryerson";
-		bus_stops [11] = "Myrtle Av/Steuben";
+		bus_stops = new string[11];
 
+		/*
+		bus_stops [12] = "Myrtle Av/Classon";
+		bus_stops [13] = "Myrtle Av/Franklin";
+		bus_stops [14] = "Myrtle Av/Spencer";
+		bus_stops [15] = "Myrtle Av/Walworth";
+		bus_stops [16] = "Myrtle Av/Nostrand";
+		bus_stops [17] = "Myrtle Av/Marcy";
+		bus_stops [18] = "Myrtle Av/Tompkins";
+		bus_stops [19] = "Myrtle Av/Throop";
+		bus_stops [20] = "Myrtle Av/Marcus Garvey";
+		bus_stops [21] = "Myrtle Av/Lewis";
+		bus_stops [22] = "Myrtle Av/Broadway";
+		bus_stops [23] = "Myrtle Av/Bushwick";
+		bus_stops [24] = "Myrtle Av/Evergreen";
+		bus_stops [25] = "Myrtle Av/Hart";
+		bus_stops [26] = "Myrtle Av/De Kalb";
+		bus_stops [27] = "Myrtle Av/Stockholm";
+		bus_stops [28] = "Myrtle Av/Wilson";
+		bus_stops [29] = "Myrtle Av/Knickerbocker";
+		bus_stops [30] = "Myrtle Av/Menahan";
+		bus_stops [31] = "Gates Av/Wyckoff";
+		bus_stops [32] = "Palmetto St/St Nicholas";
+		*/
 
 
 		pauseEnabled = false;
 		Time.timeScale = 1;
 		AudioListener.volume = 1;
 		Screen.showCursor = true;
+
+		if (Screen.width > 1000) {
+				scale = 1.0f;
+		} else if (Screen.width > 700) {
+				scale = 0.66f;
+		} else if (Screen.width > 400) {
+				scale = 0.44f;
+		}
 	
 	}
 	
 	void Update(){
+	
+
+		if (to_pratt) {
+				bus_stops [0] = "Jay St/Myrtle Plz";
+				bus_stops [1] = "Tillary St/Jay St";
+				bus_stops [2] = "Myrtle Av/Fleet Pl";
+				bus_stops [3] = "Myrtle Av/Ashland";
+				bus_stops [4] = "Myrtle Av/St Edwards";
+				bus_stops [5] = "Myrtle Av/N Portland";
+				bus_stops [6] = "Myrtle Av/Carlton";
+				bus_stops [7] = "Myrtle Av/Vanderbilt";
+				bus_stops [8] = "Myrtle Av/Clinton";
+				bus_stops [9] = "Myrtle Av/Washington";
+				bus_stops [10] = "Myrtle Av/Steuben";
+		} else {
+				bus_stops [0] = "Myrtle Av/Grand Av";
+				bus_stops [1] = "Myrtle Av/Washington";
+				bus_stops [2] = "Myrtle Av/Clinton";
+				bus_stops [3] = "Myrtle Av/Vanderbilt";
+				bus_stops [4] = "Myrtle Av/Carlton";
+				bus_stops [5] = "Myrtle Av/N Portland";
+				bus_stops [6] = "Myrtle Av/St Edwards";
+				bus_stops [7] = "Myrtle Av/Navy St";
+				bus_stops [8] = "Myrtle Av/Prince St";
+				bus_stops [9] = "Metrotech Underpass";
+				bus_stops [10] = "Jay St/Myrtle Plz";
+		}
+
 	}
 	
-	private bool showGraphicsDropDown = false;
+	//private bool showGraphicsDropDown = false;
 	
 	void OnGUI(){
 		
@@ -94,7 +143,29 @@ public class Menu : MonoBehaviour {
 
 		if (mainMenu) {
 			GUI.skin = MenuSkin;
-			if (GUI.Button (new Rect (50, 350, Screen.width - 100, 100), "Destination")) {
+			GUI.skin.button.fontSize = (int)(80 * scale);
+			if (!to_pratt) {
+				GUI.skin = DestinationOn;
+				GUI.skin.button.fontSize = (int)(80 * scale);
+			}
+			
+			if (GUI.Button (new Rect (50, Screen.height/5, 300, (scale * 100)), "To NYU")) {
+				to_pratt = false;
+			}
+			GUI.skin = MenuSkin;
+			GUI.skin.button.fontSize = (int)(80 * scale);
+			if (to_pratt) {
+				GUI.skin = DestinationOn;
+				GUI.skin.button.fontSize = (int)(80 * scale);
+			}
+			
+			if (GUI.Button (new Rect (Screen.width - 350, Screen.height/5, 300, (scale * 100)), "To Pratt")) {
+				to_pratt = true;
+			}
+
+			GUI.skin = MenuSkin;
+			GUI.skin.button.fontSize = (int)(80 * scale);
+			if (GUI.Button (new Rect (50, Screen.height/3, Screen.width - 100, (scale * 100)), "Destination:")) {
 
 				mainMenu = false;
 				mainGrey.SetActive(false);
@@ -103,22 +174,11 @@ public class Menu : MonoBehaviour {
 				stopBanner.SetActive(true);
 
 			}
-			GUI.skin = MenuSkin;
-			if (!to_pratt) {
-				GUI.skin = DestinationOn;
-			}
 
-			if (GUI.Button (new Rect (50, Screen.height/2, 300, 100), "To NYU")) {
-				to_pratt = false;
-			}
 			GUI.skin = MenuSkin;
-			if (to_pratt) {
-				GUI.skin = DestinationOn;
-			}
+			GUI.skin.button.fontSize = (int)(80 * scale);
+			GUI.Button (new Rect (50, Screen.height/2, Screen.width - 100, (scale * 100)), bus_stops[stop_index]);
 
-			if (GUI.Button (new Rect (Screen.width - 350, Screen.height/2, 300, 100), "To Pratt")) {
-				to_pratt = true;
-			}
 
 			GUI.skin = submitSkin;
 
@@ -147,37 +207,49 @@ public class Menu : MonoBehaviour {
 			}
 			*/
 			GUI.skin = stopSkin;
-			if(GUI.Button(new Rect(50, Screen.height/2, 100, 100), "^")){
-				if (streetMenu_index > 0) {
-					streetMenu_index--;
+			GUI.skin.button.fontSize = (int) (80 * scale);
+			if (streetMenu_index > 0) {
+				if(GUI.Button(new Rect(0, Screen.height/2, (scale * 100), (scale * 100)), "^")){
+					if (streetMenu_index > 0) {
+						streetMenu_index--;
+					}
 				}
 			}
-			if(GUI.Button(new Rect(50, Screen.height - 146, 100, 100), "v")){
-				if (streetMenu_index+6 < 11) {
-					streetMenu_index++;
+			if (streetMenu_index+6< 10) {
+				if(GUI.Button(new Rect(0, Screen.height - (scale * 146), (scale * 100), (scale * 100)), "v")){
+					if (streetMenu_index+6 < 10) {
+						streetMenu_index++;
+					}
 				}
 			}
 
-			if(GUI.Button(new Rect(100, Screen.height/2, Screen.width - 100, 100), bus_stops [streetMenu_index])){
+			if(GUI.Button(new Rect((scale * 100), Screen.height/2, Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index])){
 				stop_index = streetMenu_index;
+				StreetSelected();
 			}
-			if(GUI.Button(new Rect(100, Screen.height/2 + 100, Screen.width - 100, 100), bus_stops [streetMenu_index + 1])){
+			if(GUI.Button(new Rect((scale * 100), Screen.height/2 + (scale * 100), Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index + 1])){
 				stop_index = streetMenu_index + 1;
+				StreetSelected();
 			}
-			if(GUI.Button(new Rect(100, Screen.height/2 + 200, Screen.width - 100, 100), bus_stops [streetMenu_index + 2])){
+			if(GUI.Button(new Rect((scale * 100), Screen.height/2 + (scale * 200), Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index + 2])){
 				stop_index = streetMenu_index + 2;
+				StreetSelected();
 			}
-			if(GUI.Button(new Rect(100, Screen.height/2 + 300, Screen.width - 100, 100), bus_stops [streetMenu_index + 3])){
+			if(GUI.Button(new Rect((scale * 100), Screen.height/2 + (scale * 300), Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index + 3])){
 				stop_index = streetMenu_index + 3;
+				StreetSelected();
 			}
-			if(GUI.Button(new Rect(100, Screen.height/2 + 400, Screen.width - 100, 100), bus_stops [streetMenu_index + 4])){
+			if(GUI.Button(new Rect((scale * 100), Screen.height/2 + (scale * 400), Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index + 4])){
 				stop_index = streetMenu_index + 4;
+				StreetSelected();
 			}
-			if(GUI.Button(new Rect(100, Screen.height/2 + 500, Screen.width - 100, 100), bus_stops [streetMenu_index + 5])){
+			if(GUI.Button(new Rect((scale * 100), Screen.height/2 + (scale * 500), Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index + 5])){
 				stop_index = streetMenu_index + 5;
+				StreetSelected();
 			}
-			if(GUI.Button(new Rect(100, Screen.height/2 + 600, Screen.width - 100, 100), bus_stops [streetMenu_index + 6])){
+			if(GUI.Button(new Rect((scale * 100), Screen.height/2 + (scale * 600), Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index + 6])){
 				stop_index = streetMenu_index + 6;
+				StreetSelected();
 			}
 
 			//to avoid coding touch scrolling which would take longer to work with scrollView
@@ -204,21 +276,18 @@ public class Menu : MonoBehaviour {
 			*/
 			//GUI.EndScrollView();
 
-			GUI.skin = submitSkin;
-			
-			if (GUI.Button (new Rect (Screen.width - 146, Screen.height - 146, 96, 96), "")) {
-
-				streetMenu = false;
-				stopGrey.SetActive(false);
-				stopBanner.SetActive(false);
-				mainMenu = true;
-				mainGrey.SetActive(true);
-
-			}
 		}
 
 		
 			
+	}
+
+	void StreetSelected() {
+			streetMenu = false;
+			stopGrey.SetActive (false);
+			stopBanner.SetActive (false);
+			mainMenu = true;
+			mainGrey.SetActive (true);
 	}
 
 }

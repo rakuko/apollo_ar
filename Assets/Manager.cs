@@ -49,6 +49,7 @@ public class Manager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Screen.showCursor = true;
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
 	}
 	//piggy piggy wigiggly
