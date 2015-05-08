@@ -289,8 +289,8 @@ public class Geolocation : MonoBehaviour
 		
 
 		
-		_0deg.volume = 100.0f;
-		_90deg.volume = 100.0f;
+		_0deg.volume = vol;
+		_90deg.volume = vol;
 		_180deg.volume = 0.0f;
 		_270deg.volume = 0.0f;
 		/*
