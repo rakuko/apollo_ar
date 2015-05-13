@@ -68,10 +68,10 @@ public class Geolocation : MonoBehaviour
 	bool to_pratt = Manager.Pratt; //true = going to pratt, false = going to NYU
 	string going_to; //string value to help display which direction we're going
 
-	bool stop_before = false; //have you passed the stop before YOUR stop?
+	bool stop_before = true; //have you passed the stop before YOUR stop?
 	bool arrived = false; //have you arrived at your stop?
 	bool played = false; //did the sound play yet?
-	bool clip_changed = false; //did the clip change yet?
+	bool clip_changed = true; //did the clip change yet?
 
 
 	//--------------------------------------SOUND----------------------------------------------
@@ -87,8 +87,8 @@ public class Geolocation : MonoBehaviour
 	private AudioSource _180deg;
 	private AudioSource _270deg;
 	
-	public AudioClip[] clipIn0;
-	public AudioClip[] clipIn90;
+	//public AudioClip[] clipIn0;
+	//public AudioClip[] clipIn90;
 	public AudioClip[] clipIn180;
 	public AudioClip[] clipIn270;
 	//public GameObject myCamera;
@@ -148,8 +148,14 @@ public class Geolocation : MonoBehaviour
 		//-------------------------------------------------------------------------------------
 		*/
 
-		bus_stops = new string[11];
+		bus_stops = new string[5];
 
+		bus_stops [0] = "The Black Box";
+		bus_stops [1] = "Conference Room";
+		bus_stops [2] = "Kitchen";
+		bus_stops [3] = "Rentals";
+		bus_stops [4] = "Game Center";
+		/*
 		if (to_pratt) {
 			bus_stops [0] = "Jay St/Myrtle Plz";
 			bus_stops [1] = "Tillary St/Jay St";
@@ -176,6 +182,7 @@ public class Geolocation : MonoBehaviour
 			bus_stops [9] = "Metrotech Underpass";
 			bus_stops [10] = "Jay St/Myrtle Plz";
 		}
+		*/
 		/*
 		bus_stops [12] = "Myrtle Av/Classon";
 		bus_stops [13] = "Myrtle Av/Franklin";
@@ -201,9 +208,16 @@ public class Geolocation : MonoBehaviour
 		*/
 
 		
-		bus_stops_lat = new double[11];
+		bus_stops_lat = new double[5];
 		//bus_stops_lat [0] = 40.694652f;
 
+		bus_stops_lat [0] = 40.692992;
+		bus_stops_lat [1] = 40.693538;
+		bus_stops_lat [2] = 40.693242;
+		bus_stops_lat [3] = 40.693187;
+		bus_stops_lat [4] = 40.693476;
+
+		/*
 		if (to_pratt) {
 			bus_stops_lat [0] = 40.694046;
 			bus_stops_lat [1] = 40.695960;
@@ -230,11 +244,19 @@ public class Geolocation : MonoBehaviour
 			bus_stops_lat [9] = 40.693186;//
 			bus_stops_lat [10] = 40.694046;
 		}
+		*/
 		
 		
 		bus_stops_long = new double[11];
 		//bus_stops_long [0] = -73.987068f;
 
+		bus_stops_long [0] = -73.985596;
+		bus_stops_long [1] = -73.985706;
+		bus_stops_long [2] = -73.985592;
+		bus_stops_long [3] = -73.985858;
+		bus_stops_long [4] = -73.985425;
+
+		/*
 		if (to_pratt) {
 			bus_stops_long [0] = -73.987052;
 			bus_stops_long [1] = -73.986783;
@@ -261,12 +283,15 @@ public class Geolocation : MonoBehaviour
 			bus_stops_long [9] = -73.986400;//
 			bus_stops_long [10] = -73.987052;
 		}
+		*/
 
+		/*
 		if (to_pratt) {
 				going_to = "Pratt";
 		} else {
 				going_to = "NYU";
 		}
+		*/
 
 		//---------------------------------sound-----------------------------------------
 		//-------------------------------------------------------------------------------
@@ -291,7 +316,7 @@ public class Geolocation : MonoBehaviour
 		
 		_0deg.volume = vol;
 		_90deg.volume = vol;
-		_180deg.volume = 0.0f;
+		_180deg.volume = vol;
 		_270deg.volume = 0.0f;
 		/*
 		_0deg.panLevel = 0.0f;
@@ -315,19 +340,24 @@ public class Geolocation : MonoBehaviour
 		} else {
 			stop_before_index = stop_index;
 		}
-
+		/*
 		dest_lat = bus_stops_lat [stop_before_index];
 		dest_lon = bus_stops_long [stop_before_index];
 		dest_name = bus_stops [stop_before_index];
+		*/
+
+		dest_lat = bus_stops_lat [stop_index];
+		dest_lon = bus_stops_long [stop_index];
+		dest_name = bus_stops [stop_index];
 
 		//----------------------------------sound------------------------------------------
 		//---------------------------------------------------------------------------------
 		//---------------------------------------------------------------------------------
 		//---------------------------------------------------------------------------------
 
-		_0deg.clip = clipIn0[stop_before_index];
-		_90deg.clip = clipIn90[stop_before_index];
-		//_180deg.clip = clipIn180[stop_before_index];
+		//_0deg.clip = clipIn0[stop_before_index];
+		//_90deg.clip = clipIn90[stop_before_index];
+		_180deg.clip = clipIn180[stop_index];
 		//_270deg.clip = clipIn270[stop_before_index];
 
 		//----------------------------------------------------------------------------------
@@ -530,7 +560,7 @@ public class Geolocation : MonoBehaviour
 			//dis3 = DistanceCalculation (latitude, longitude, bus_stops_lat [2], bus_stops_long [2]);
 
 			
-			if (distance < 36) {
+			if (distance < 10) {
 				print ("passed: " + dest_name);
 				//distance = dis1;
 				//omni.sound (true);
@@ -588,8 +618,8 @@ public class Geolocation : MonoBehaviour
 
 			if (played && !clip_changed) {
 				if (!_0deg.isPlaying && !_90deg.isPlaying) {
-					_0deg.clip = clipIn0[stop_index];
-					_90deg.clip = clipIn90[stop_index];
+					//_0deg.clip = clipIn0[stop_index];
+					//_90deg.clip = clipIn90[stop_index];
 					clip_changed = true;
 				}
 
@@ -657,6 +687,7 @@ public class Geolocation : MonoBehaviour
 	public void sound(bool play, bool pratt) {
 		//yield return new WaitForSeconds(3f);
 
+		/*
 		if ((play) && (pratt)) {
 			_0deg.Play ();
 			//_90deg.Play ();
@@ -666,14 +697,8 @@ public class Geolocation : MonoBehaviour
 		else if ((play) && (!pratt)) {
 			_90deg.Play();
 		}
-		/*
-		else {
-			_0deg.Stop ();
-			_90deg.Stop ();
-			//_180deg.Stop ();
-			//_270deg.Stop ();
-		}
 		*/
+		_180deg.Play ();
 	}
 
 	/*

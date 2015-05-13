@@ -61,7 +61,7 @@ public class Menu : MonoBehaviour {
 
 	void Start(){
 
-		bus_stops = new string[11];
+		bus_stops = new string[5];
 
 		/*
 		bus_stops [12] = "Myrtle Av/Classon";
@@ -106,6 +106,13 @@ public class Menu : MonoBehaviour {
 	void Update(){
 	
 
+		bus_stops [0] = "The Black Box";
+		bus_stops [1] = "Conference Room";
+		bus_stops [2] = "Kitchen";
+		bus_stops [3] = "Rentals";
+		bus_stops [4] = "Game Center";
+
+		/*
 		if (to_pratt) {
 				bus_stops [0] = "Jay St/Myrtle Plz";
 				bus_stops [1] = "Tillary St/Jay St";
@@ -131,6 +138,7 @@ public class Menu : MonoBehaviour {
 				bus_stops [9] = "Metrotech Underpass";
 				bus_stops [10] = "Jay St/Myrtle Plz";
 		}
+		*/
 
 	}
 	
@@ -144,6 +152,11 @@ public class Menu : MonoBehaviour {
 		if (mainMenu) {
 			GUI.skin = MenuSkin;
 			GUI.skin.button.fontSize = (int)(80 * scale);
+
+			//------
+			GUI.Button (new Rect (50, Screen.height/3 - 125, Screen.width - 100, (scale * 100)), "MAGNET Demo");
+			//-----
+			/*
 			if (!to_pratt) {
 				GUI.skin = DestinationOn;
 				GUI.skin.button.fontSize = (int)(80 * scale);
@@ -158,10 +171,12 @@ public class Menu : MonoBehaviour {
 				GUI.skin = DestinationOn;
 				GUI.skin.button.fontSize = (int)(80 * scale);
 			}
+
 			
 			if (GUI.Button (new Rect (Screen.width - 350, Screen.height/5, 300, (scale * 100)), "To Pratt")) {
 				to_pratt = true;
 			}
+			*/
 
 			GUI.skin = MenuSkin;
 			GUI.skin.button.fontSize = (int)(80 * scale);
@@ -215,13 +230,14 @@ public class Menu : MonoBehaviour {
 					}
 				}
 			}
+			/*
 			if (streetMenu_index+6< 10) {
 				if(GUI.Button(new Rect(0, Screen.height - (scale * 146), (scale * 100), (scale * 100)), "v")){
 					if (streetMenu_index+6 < 10) {
 						streetMenu_index++;
 					}
 				}
-			}
+			}*/
 
 			if(GUI.Button(new Rect((scale * 100), Screen.height/2, Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index])){
 				stop_index = streetMenu_index;
@@ -243,6 +259,7 @@ public class Menu : MonoBehaviour {
 				stop_index = streetMenu_index + 4;
 				StreetSelected();
 			}
+			/*
 			if(GUI.Button(new Rect((scale * 100), Screen.height/2 + (scale * 500), Screen.width - 100, (scale * 100)), bus_stops [streetMenu_index + 5])){
 				stop_index = streetMenu_index + 5;
 				StreetSelected();
@@ -251,7 +268,7 @@ public class Menu : MonoBehaviour {
 				stop_index = streetMenu_index + 6;
 				StreetSelected();
 			}
-
+			*/
 			//to avoid coding touch scrolling which would take longer to work with scrollView
 			//i'm simply going to update the buttons everytime you press up arrow or down arrow
 			//buttons on the screen.
